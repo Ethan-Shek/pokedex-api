@@ -109,6 +109,11 @@ app.head('/api/pokemon/name/:name', (req, res) => {
 });
 
 app.use((req, res) => {
+  res.status(404).json({ error: "Not found" });
+});
+
+// Catch-all for undefined routes
+app.use((req, res) => {
     res.status(404).json({ error: 'Endpoint not found' });
 });
 
