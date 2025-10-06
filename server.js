@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 //parses body data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 //load dataset at startup
 let pokedex = [];
@@ -108,11 +109,6 @@ app.head('/api/pokemon/name/:name', (req, res) => {
     res.status(200).end();
 });
 
-app.use((req, res) => {
-  res.status(404).json({ error: "Not found" });
-});
-
-// Catch-all for undefined routes
 app.use((req, res) => {
     res.status(404).json({ error: 'Endpoint not found' });
 });

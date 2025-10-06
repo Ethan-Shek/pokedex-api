@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokédex API Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #ef5350;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    section {
+      margin-bottom: 30px;
+    }
+
+    input, button {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #ef5350;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #d32f2f;
+    }
+
+    .pokemon-card {
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px;
+      margin: 10px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .pokemon-card h3 {
+      margin: 0;
+    }
+
+    #results {
+      display: flex;
+      flex-direction: column;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Pokédex API Viewer</h1>
+    <p>Interact with the Pokédex API (Gen 1)</p>
+  </header>
+
+  <main>
+    <section id="search-section">
+      <h2>🔍 Search Pokémon</h2>
+      <input type="text" id="search-name" placeholder="Enter name" />
+      <button onclick="searchByName()">Search by Name</button>
+      <br />
+      <input type="text" id="search-type" placeholder="Enter type (Case-Sensitive)" />
+      <button onclick="searchByType()">Search by Type</button>
+      <br />
+      <button onclick="getAllPokemon()">Show All Pokémon</button>
+    </section>
+
+    <section id="add-section">
+      <h2>➕ Add New Pokémon</h2>
+      <input type="text" id="new-name" placeholder="Name" />
+      <input type="text" id="new-type" placeholder="Type (comma-separated)" />
+      <button onclick="addPokemon()">Add Pokémon</button>
+    </section>
+
+    <section id="results-section">
+      <h2>Results</h2>
+      <div id="results">Loading Pokémon...</div>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="docs.html">📘 View API Documentation</a></p>
+  </footer>
+
+  <script>
+    const apiBase = '/api/pokemon';
+
+    async function getAllPokemon() {
+      const res = await fetch(apiBase);
+      const data = await res.json();
+      displayResults(data);
+    }
+
+    async function searchByName() {
+      const name = document.getElementById('search-name').value.trim();
+      if (!name) return alert('Enter a name');
+      const res = await fetch(`${apiBase}/name/${name}`);
+      const data = await res.json();
+      if (res.ok) displayResults(data);
+      else document.getElementById('results').innerHTML = '<p>No Pokémon found.</p>';
+    }
+
+    async function searchByType() {
+      const type = document.getElementById('search-type').value.trim();
+      if (!type) return alert('Enter a type');
+      const res = await fetch(`${apiBase}?type=${type}`);
+      const data = await res.json();
+      displayResults(data);
+    }
+
+    async function addPokemon() {
+      const name = document.getElementById('new-name').value.trim();
+      const type = document.getElementById('new-type').value.trim();
+      if (!name) return alert('Name is required');
+      const body = { name, type: type.split(',').map(t => t.trim()) };
+
+      const res = await fetch(apiBase, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        const newPokemon = await res.json();
+        alert(`Added Pokémon: ${newPokemon.name}`);
+        getAllPokemon();
+      } else {
+        alert('Error adding Pokémon');
+      }
+    }
+
+    function displayResults(pokemons) {
+      const container = document.getElementById('results');
+      if (!Array.isArray(pokemons)) pokemons = [pokemons];
+
+      container.innerHTML = pokemons.map(p => `
+        <div class="pokemon-card">
+          <h3>${p.name} (ID: ${p.id})</h3>
+          <p>Type: ${p.type ? p.type.join(', ') : 'Unknown'}</p>
+        </div>
+      `).join('');
+    }
+
+    // Load all Pokémon on page load
+    getAllPokemon();
+  </script>
+</body>
+</html>
