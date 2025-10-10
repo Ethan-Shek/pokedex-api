@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokedex API Documentation</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f8;
+      margin: 0;
+      padding: 0;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #ef5350;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3 {
+      color: #d32f2f;
+    }
+
+    code {
+      background: #eee;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #f9f9f9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #555;
+      font-size: 0.9em;
+    }
+
+    .example {
+      background: #f7f7f7;
+      padding: 1rem;
+      border-left: 4px solid #ef5350;
+      margin: 1rem 0;
+      border-radius: 8px;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .example code {
+      background: none;
+      padding: 0;
+      font-size: 0.95em;
+    }
+
+    a {
+      color: #d32f2f;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Pokédex API Documentation</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2>Overview</h2>
+      <p>This API allows you to retrieve, search, and manage Pokémon data from a local Pokédex dataset.</p>
+    </section>
+
+    <section>
+      <h2>Endpoints</h2>
+
+      <h3>GET <code>/api/pokemon</code></h3>
+      <p>Returns a list of all Pokémon.</p>
+      <div class="example">
+        Request: <code>/api/pokemon</code><br><br>
+        Result:<br>
+        <code>[
+  { "name": "Bulbasaur", "type": ["Grass", "Poison"], "hp": 45, "attack": 49, "defense": 49 },
+  { "name": "Charmander", "type": ["Fire"], "hp": 39, "attack": 52, "defense": 43 }
+]</code>
+      </div>
+
+      <h3>GET <code>/api/pokemon/name/:name</code></h3>
+      <p>Returns a Pokémon that matches the specified name.</p>
+      <div class="example">
+        Request: <code>/api/pokemon/name/pikachu</code><br><br>
+        Result:<br>
+        <code>[
+  { "name": "Pikachu", "type": ["Electric"], "hp": 35, "attack": 55, "defense": 40 }
+]</code>
+      </div>
+
+      <h3>GET <code>/api/pokemon?type=Fire</code></h3>
+      <p>Filters Pokémon by their type.</p>
+      <div class="example">
+        Request: <code>/api/pokemon?type=Fire</code><br><br>
+        Result:<br>
+        <code>[
+  { "name": "Charmander", "type": ["Fire"], "hp": 39, "attack": 52, "defense": 43 },
+  { "name": "Vulpix", "type": ["Fire"], "hp": 38, "attack": 41, "defense": 40 }
+]</code>
+      </div>
+
+      <h3>POST <code>/api/pokemon</code></h3>
+      <p>Adds a new Pokémon to the Pokédex. Requires a JSON body.</p>
+      <div class="example">
+        Request:<br>
+        <code>
+POST /api/pokemon<br>
+Body:<br>
+{
+  "name": "Mewtwo",
+  "type": ["Psychic"],
+  "hp": 106,
+  "attack": 110,
+  "defense": 90
+}
+        </code><br><br>
+        Result:<br>
+        <code>{ "message": "Pokémon added successfully", "pokemon": { "name": "Mewtwo" } }</code>
+      </div>
+
+      <h3>GET <code>/api/random</code></h3>
+      <p>Returns a random Pokémon from the Pokédex.</p>
+      <div class="example">
+        Request: <code>/api/random</code><br><br>
+        Result:<br>
+        <code>[
+  { "name": "Squirtle", "type": ["Water"], "hp": 44, "attack": 48, "defense": 65 }
+]</code>
+      </div>
+    </section>
+
+    <section>
+      <h2>⚠️ Error Responses</h2>
+      <table>
+        <tr><th>Status</th><th>Description</th></tr>
+        <tr><td>400</td><td>Bad Request – missing or invalid parameters</td></tr>
+        <tr><td>404</td><td>Not Found – Pokémon does not exist</td></tr>
+        <tr><td>500</td><td>Server Error – unexpected internal issue</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>💡 Notes</h2>
+      <ul>
+        <li>All data is served as <code>application/json</code>.</li>
+        <li>Use <code>fetch()</code> or Postman to test API routes.</li>
+        <li>The server must be running locally on port 3000 (or the port you set).</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Pokédex API | Created by Ethan Shek</p>
+  </footer>
+</body>
+</html>
