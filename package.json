@@ -1,32 +1,18 @@
 {
   "name": "pokedex-api",
   "version": "1.0.0",
-<<<<<<< HEAD
   "description": "Local Pokédex API using Node.js HTTP server",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js"
-=======
-  "description": "\"# pokedex-api\"",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
->>>>>>> 25e2630a0537e3a8e0cd03f076cd9bbeb694affc
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ethan-Shek/pokedex-api.git"
   },
   "keywords": [],
-<<<<<<< HEAD
   "author": "Ethan Shek",
-  "license": "MIT",
-=======
-  "author": "",
-  "license": "ISC",
->>>>>>> 25e2630a0537e3a8e0cd03f076cd9bbeb694affc
   "bugs": {
     "url": "https://github.com/Ethan-Shek/pokedex-api/issues"
   },
@@ -35,11 +21,5 @@
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.32.0"
-<<<<<<< HEAD
-=======
-  },
-  "dependencies": {
-    "express": "^5.1.0"
->>>>>>> 25e2630a0537e3a8e0cd03f076cd9bbeb694affc
   }
 }
